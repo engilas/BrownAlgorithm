@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "BrownMethod", "BrownMethod\BrownMethod.fsproj", "{EFBD83CB-B928-4230-832E-CC80A4B9C743}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "BrownMethod", "BrownMethod\BrownMethod.fsproj", "{EFBD83CB-B928-4230-832E-CC80A4B9C743}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrownView", "BrownView\BrownView.csproj", "{98EA4CC0-3566-490A-8122-8197D5254947}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{EFBD83CB-B928-4230-832E-CC80A4B9C743}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFBD83CB-B928-4230-832E-CC80A4B9C743}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFBD83CB-B928-4230-832E-CC80A4B9C743}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98EA4CC0-3566-490A-8122-8197D5254947}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98EA4CC0-3566-490A-8122-8197D5254947}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98EA4CC0-3566-490A-8122-8197D5254947}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98EA4CC0-3566-490A-8122-8197D5254947}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

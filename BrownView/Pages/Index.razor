@@ -1,0 +1,76 @@
+﻿@page "/"
+@using Brown
+
+<h3>Метод брауна</h3>
+
+<style>
+    input {
+        width: 50px;
+    }
+</style>
+
+<div>
+    Матрица
+    <select bind="@m">
+        @for (int i = 2; i < 7; i++)
+        {
+            <option>@i</option>
+        }
+    </select>
+    x
+    <select bind="@n">
+        @for (int i = 2; i < 7; i++)
+        {
+        <option>@i</option>
+        }
+    </select>
+    <br />
+    <br />
+    <form onsubmit="@OnClick">
+        <label>Итераций:</label>
+        <input type="number" bind="@iter" />
+        <table>
+            @for (int i = 0; i < m; i++)
+            {
+                <tr>
+                    @for (int j = 0; j < n; j++)
+                    {
+                        var idx = i * n + j;
+                        <td>
+                            <input type="number" bind="@arr[idx]" required />
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+        <br />
+        <button type="submit" >Построить решение</button>
+    </form>
+</div>
+
+@functions {
+    int m = 2 , n = 2, iter = 10;
+
+    int[] arr = new int[128];
+
+    void OnClick()
+    {
+        var list = new int[m][];
+        for (int i = 0; i < m; i++)
+        {
+            list[i] = new int[n];
+            for (int j = 0; j < n; j++)
+            {
+                var idx = i * n + j;
+                list[i][j] = arr[idx];
+            }
+        }
+
+        var result = BrownMethod.braun(list).Take(iter);
+
+        foreach (var r in result)
+        {
+            Console.WriteLine(r.Vk);
+        }
+    }
+}
