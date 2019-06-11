@@ -7,6 +7,10 @@
     input {
         width: 50px;
     }
+
+    th, td {
+        width: 60px;
+    }
 </style>
 
 <div>
@@ -14,14 +18,14 @@
     <select bind="@m">
         @for (int i = 2; i < 7; i++)
         {
-            <option>@i</option>
+            <option value="@i">@i</option>
         }
     </select>
     x
     <select bind="@n">
         @for (int i = 2; i < 7; i++)
         {
-        <option>@i</option>
+            <option value="@i">@i</option>
         }
     </select>
     <br />
@@ -44,14 +48,109 @@
             }
         </table>
         <br />
-        <button type="submit" >Построить решение</button>
+        <button type="submit">Построить решение</button>
     </form>
+    <br />
+    @if (result != null)
+    {
+        if (result.SedlT)
+        {
+            <p>Игра имеет решение в чистых стратегиях</p>
+        }
+        else
+        {
+            <p>a = @result.A</p>
+            <p>b = @result.B</p>
+            <p>
+                P* = (
+                @foreach (var p in result.P)
+                {
+                    @(p.ToString("F") + "; ")
+                }
+                )
+            </p>
+            <p>
+                Q* = (
+                @foreach (var q in result.Q)
+                {
+                    @(q.ToString("F") + "; ")
+                }
+                )
+            </p>
+            <p>
+                V = @result.V
+            </p>
+        }
+
+        if (result.Iters?.Any() == true)
+        {
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>K</th>
+                        <th>i</th>
+                        @for (int i = 0; i < result.Iters[0].B.Length; i++)
+                        {
+                            <th>@($"B{i + 1}")</th>
+                        }
+                        <th>a K</th>
+                        <th>j</th>
+                        @for (int i = 0; i < result.Iters[0].A.Length; i++)
+                        {
+                            <th>@($"A{i + 1}")</th>
+                        }
+                        <th>b K</th>
+                        <th>v K</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in result.Iters)
+                    {
+                        <tr>
+                            <td>@r.K</td>
+                            <td>@r.i</td>
+                            @for (int i = 0; i < r.B.Length; i++)
+                            {
+                                <td>@r.B[i]</td>
+                            }
+                            <td>@r.Ak.ToString("F")</td>
+                            <td>@r.j</td>
+                            @for (int i = 0; i < r.A.Length; i++)
+                            {
+                                <td>@r.A[i]</td>
+                            }
+                            <td>@r.Bk.ToString("F")</td>
+                            <td>@r.Vk.ToString("F")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    }
 </div>
 
 @functions {
-    int m = 2 , n = 2, iter = 10;
+    int m, n, iter = 10;
 
     int[] arr = new int[128];
+
+    BrownMethod.BrownResult result;
+
+    protected override void OnParametersSet()
+    {
+        m = 2;
+        n = 4;
+
+        arr[0] = 5;
+        arr[1] = 4;
+        arr[2] = 3;
+        arr[3] = 2;
+
+        arr[4] = 1;
+        arr[5] = 4;
+        arr[6] = 4;
+        arr[7] = 7;
+    }
 
     void OnClick()
     {
@@ -66,11 +165,7 @@
             }
         }
 
-        var result = BrownMethod.braun(list).Take(iter);
-
-        foreach (var r in result)
-        {
-            Console.WriteLine(r.Vk);
-        }
+        result = BrownMethod.braun(list, iter);
+        //Console.WriteLine(result.Count);
     }
 }

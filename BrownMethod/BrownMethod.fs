@@ -19,7 +19,20 @@ module BrownMethod =
             Vk: double
         }
 
-    let braun mtx =
+    type BrownResult = {
+        SedlT: bool
+        A: int
+        B: int
+
+        P: double list
+        Q: double list
+
+        V: double
+
+        Iters: Iter list
+    }
+
+    let braun mtx iterCount =
         let mtx = 
             mtx
             |> List.ofArray
@@ -42,10 +55,10 @@ module BrownMethod =
         
             let vK = (aK + bK) / 2.0
     
-            let qqq = {
+            let currentIter = {
                 K = iter.K + 1;
-                i = startI;
-                j = bMinAt
+                i = startI + 1;
+                j = bMinAt + 1
                 A = a;
                 B = b;
                 Ak = aK;
@@ -54,8 +67,8 @@ module BrownMethod =
             }
     
             seq {
-                yield qqq
-                yield! braunInternal mtx tr aMaxAt qqq
+                yield currentIter
+                yield! braunInternal mtx tr aMaxAt currentIter
             }
 
         let minMaxGeneric first second m =
@@ -76,9 +89,17 @@ module BrownMethod =
         let alpha = maxMin mtx
         let beta = minMax tr
 
-        match alpha = beta with
+        match snd alpha = snd beta with
         | true -> 
-            failwith "Игра имеет решение в чистых стратегиях"
+            {
+                SedlT = true;
+                A = snd alpha;
+                B = snd beta;
+                P = [];
+                Q = [];
+                Iters = [];
+                V = 0.0;
+            }
         | false -> 
             let startIter = {
                 K = 0;
@@ -91,6 +112,23 @@ module BrownMethod =
                 Vk =  0.0;
             }
         
-            braunInternal mtx tr ( fst alpha ) startIter
+            let iters = braunInternal mtx tr ( fst alpha ) startIter |> Seq.take iterCount |> Seq.toList
+
+            let getSolution mapFun =
+                iters
+                |> List.map mapFun
+                |> List.sort
+                |> List.groupBy id
+                |> List.map (fun (_,v) -> double v.Length / double iterCount)
+
+            {
+                SedlT = false;
+                A = snd alpha;
+                B = snd beta;
+                P = getSolution (fun x -> x.i);
+                Q = getSolution (fun x -> x.j);
+                Iters = iters;
+                V = List.last iters |> (fun x -> x.Vk)
+            }
 
     
