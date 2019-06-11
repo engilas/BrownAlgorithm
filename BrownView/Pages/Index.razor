@@ -32,7 +32,7 @@
     <br />
     <form onsubmit="@OnClick">
         <label>Итераций:</label>
-        <input type="number" bind="@iter" />
+        <input type="number" bind="@iter" style="width: 100px" />
         <table>
             @for (int i = 0; i < m; i++)
             {
@@ -78,7 +78,7 @@
                 )
             </p>
             <p>
-                V = @result.V
+                V = @result.V.ToString("F")
             </p>
         }
 
