@@ -11,6 +11,10 @@
     th, td {
         width: 60px;
     }
+
+    .red {
+        color: red;
+    }
 </style>
 
 <div>
@@ -111,13 +115,13 @@
                             <td>@r.i</td>
                             @for (int i = 0; i < r.B.Length; i++)
                             {
-                                <td>@r.B[i]</td>
+                                <td class="@(r.BMin == i ? "red" : "")">@r.B[i]</td>
                             }
                             <td>@r.Ak.ToString("F")</td>
                             <td>@r.j</td>
                             @for (int i = 0; i < r.A.Length; i++)
                             {
-                                <td>@r.A[i]</td>
+                                <td class="@(r.AMax == i ? "red" : "")">@r.A[i]</td>
                             }
                             <td>@r.Bk.ToString("F")</td>
                             <td>@r.Vk.ToString("F")</td>

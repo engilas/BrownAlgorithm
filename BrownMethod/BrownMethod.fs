@@ -17,6 +17,8 @@ module BrownMethod =
             Ak: double
             Bk: double
             Vk: double
+            BMin: int
+            AMax: int
         }
 
     type BrownResult = {
@@ -64,6 +66,8 @@ module BrownMethod =
                 Ak = aK;
                 Bk = bK;
                 Vk =  vK;
+                BMin = bMinAt;
+                AMax = aMaxAt;
             }
     
             seq {
@@ -110,6 +114,8 @@ module BrownMethod =
                 Ak = 0.0;
                 Bk = 0.0;
                 Vk =  0.0;
+                BMin = 0;
+                AMax = 0;
             }
         
             let iters = braunInternal mtx tr ( fst alpha ) startIter |> Seq.take iterCount |> Seq.toList
