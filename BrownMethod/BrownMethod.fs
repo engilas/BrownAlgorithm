@@ -120,19 +120,21 @@ module BrownMethod =
         
             let iters = braunInternal mtx tr ( fst alpha ) startIter |> Seq.take iterCount |> Seq.toList
 
-            let getSolution mapFun =
-                iters
-                |> List.map mapFun
-                |> List.sort
-                |> List.groupBy id
-                |> List.map (fun (_,v) -> double v.Length / double iterCount)
+            let rows = mtx.Length
+            let cols = tr.Length
+
+            let getSolution dim mapFun =
+                let starts = List.map mapFun iters
+                [1..dim]
+                |> List.map (fun x -> starts |> List.filter ((=) x) |> List.length )
+                |> List.map (fun x -> double x / double iterCount)
 
             {
                 SedlT = false;
                 A = snd alpha;
                 B = snd beta;
-                P = getSolution (fun x -> x.i);
-                Q = getSolution (fun x -> x.j);
+                P = getSolution rows (fun x -> x.i);
+                Q = getSolution cols (fun x -> x.j);
                 Iters = iters;
                 V = List.last iters |> (fun x -> x.Vk)
             }
